@@ -49,3 +49,12 @@
 
     fieldBounds.lookup(U.name()) >> UMax.value();
     dimensionedScalar smallU("smallU", dimVelocity, 1e-10);
+
+
+// Read convergence criteria and maximum iteration numbers for secant method
+    dictionary secantMethod = mesh.solutionDict().subDict("secantMethod");
+    scalar     pRelTol = 0;
+    secantMethod.lookup("pRelTol") >> pRelTol;
+
+    scalar     pMaxIter = 0;
+    secantMethod.lookup("pMaxIter") >> pMaxIter;
