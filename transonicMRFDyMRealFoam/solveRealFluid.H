@@ -179,10 +179,13 @@
                     scalar drho = mag(rho2 - rho1);
                     scalar e_celli = e[celli];
 
-                    // start secant method and convergence check here
-                    while(drho > 1e-07)
-                    {
+                    scalar iter_numer = 0 ; 
 
+                    // start secant method and convergence check here
+                    // scalar pRelTol is declared in readFieldBounds.H
+                    // and defined in fvSolusion
+                    while(drho > pRelTol)
+                    {
                         pf     = p2 - (p2-p1)/(rho2-rho1)*(rho2-rhof);
 
                         p1     = p2; 
@@ -192,6 +195,13 @@
                         rho1   = rhoepTable(e_celli,p1);
 
                         drho   = mag(rho2 - rho1);
+
+                        iter_numer++;
+                        if (iter_numer > pMaxIter)
+                        {
+                        	Info << "Maximum iteration number for secant method is beyond the limit of: " << pMaxIter << endl;
+                        	Info << "Current iteration number is: " << iter_numer << endl;
+                        }
 
                     }
                     // find the final value and update p field.
